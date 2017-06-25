@@ -7,7 +7,7 @@
 
 	SetEnv, title, StartUp FireFox
 	SetEnv, mode, FF Start Options
-	SetEnv, version, Version 2017-05-21
+	SetEnv, version, Version 2017-06-25
 	SetEnv, Author, LostByteSoft
 
 ;;--- Softwares options ---
@@ -32,8 +32,6 @@
 	FileInstall, ico_ff_blue.ico, ico_ff_blue.ico, 0
 	FileInstall, ico_ff_red.ico, ico_ff_red.ico, 0
 	FileInstall, ico_options.ico, ico_options.ico, 0
-	FileInstall, ico_hide_b.ico, ico_hide_b.ico, 0
-	FileInstall, ico_hide_w.ico, ico_hide_w.ico, 0
 
 	IniRead, delay, StartUpFireFox.ini, options, delay
 	IniRead, minimize, StartUpFireFox.ini, options, minimize
@@ -79,10 +77,6 @@
 	Menu, Tray, Icon, Minimize, ico_minimize.ico, 1
 	Menu, tray, add, Maximize, maximize
 	Menu, Tray, Icon, Maximize, ico_Maximize.ico, 1
-	;Menu, tray, add, Hide, Hide
-	;Menu, Tray, Icon, Hide, ico_hide_b.ico, 1
-	;Menu, tray, add, UnHide, UnHide
-	;Menu, Tray, Icon, UnHide, ico_hide_b.ico, 1
 	menu, tray, add
 	Menu, tray, add, Start/Open Firefox, traystart			; Start new ff
 	Menu, Tray, Icon, Start/Open Firefox, Ico_FF_red.ico, 1
@@ -113,9 +107,9 @@ Run:
 	skip:
 	;;msgbox, startup=%startup%
 	Run, %path% %startup%
-	Sleep, 1000
+	Sleep, 2000
 	WinWait, Mozilla Firefox
-	Sleep, 1000
+	Sleep, 2000
 	IfEqual, minimize, 1, goto, minimize
 	IfEqual, Maximize, 1, goto, Maximize
 	msgbox, Error (variable?) StartUpFireFox.ini
@@ -128,44 +122,35 @@ traystart:
 		goto, existmax
 		}
 	Run, %path% %startup%
-	Sleep, 1000
+	Sleep, 2000
 	WinWait,- Mozilla Firefox
-	Sleep, 1000
+	Sleep, 2000
 	existmax:
 	WinActivate, Mozilla Firefox
+	Sleep, 2000
 	WinMaximize, Mozilla Firefox
 	Goto, wait
 
 minimize:
 	Menu, Tray, Icon, ico_ff_blue.ico
+	Sleep, 1000
 	WinMinimize,Mozilla Firefox
 	Goto, wait
 
 maximize:
 	Menu, Tray, Icon, ico_ff_blue.ico
+	Sleep, 1000
 	WinActivate, Mozilla Firefox
+	Sleep, 1000
 	WinMaximize, Mozilla Firefox
-	Goto, wait
-
-hide:
-	Menu, Tray, Icon, ico_hide_w.ico
-	SetEnv, hide, 1
-	WinHide, Mozilla Firefox
-	sleep, 5000
-	Goto, wait
-
-unhide:
-	Menu, Tray, Icon, ico_hide_w.ico
-	SetEnv, hide, 0
-	WinShow, Mozilla Firefox
-	sleep, 5000
 	Goto, wait
 
 wait:
 	Menu, Tray, Icon, ico_ff_red.ico
 	IfEqual, saveas, 0, goto, waitingloop
 	CoordMode, Mouse, Relative
-	WinWaitActive, Save Image
+	;; WinWaitActive, Save Image
+	WinWaitActive, Save
 	Menu, Tray, Icon, Ico_Save.ico
 	MouseGetPos, InVarX, InVarY
 	WinMove, Save Image, , , ,850,550
@@ -256,7 +241,7 @@ GuiClose:
 
 Secret:
 	Menu, Tray, Icon, ico_secret.ico
-	MsgBox, 0, Start Up Firefox Secret ALL variables show, A_WorkingDir=%A_WorkingDir% path=%path%`n`ndelay=%delay% saveas=%saveas% maximize=%maximize% minimize=%minimize% hide=%hide% autorun=%autorun%`n`nA_ComputerName=%A_ComputerName%`n`nstartup=%startup%
+	MsgBox, 0, Start Up Firefox Secret ALL variables show, A_WorkingDir=%A_WorkingDir% path=%path%`n`ndelay=%delay% saveas=%saveas% maximize=%maximize% minimize=%minimize% autorun=%autorun%`n`nA_ComputerName=%A_ComputerName%`n`nstartup=%startup%
 	Menu, Tray, Icon, Ico_FF_red.ico
 	Return
 
