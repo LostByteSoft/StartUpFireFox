@@ -7,7 +7,7 @@
 
 	SetEnv, title, StartUp FireFox
 	SetEnv, mode, FF Start Options
-	SetEnv, version, Version 2017-06-25
+	SetEnv, version, Version 2017-07-08
 	SetEnv, Author, LostByteSoft
 
 ;;--- Softwares options ---
@@ -32,6 +32,8 @@
 	FileInstall, ico_ff_blue.ico, ico_ff_blue.ico, 0
 	FileInstall, ico_ff_red.ico, ico_ff_red.ico, 0
 	FileInstall, ico_options.ico, ico_options.ico, 0
+	FileInstall, ico_reboot.ico, ico_reboot.ico, 0
+	FileInstall, ico_shut.ico, ico_shut.ico, 0
 
 	IniRead, delay, StartUpFireFox.ini, options, delay
 	IniRead, minimize, StartUpFireFox.ini, options, minimize
@@ -142,15 +144,17 @@ maximize:
 	Sleep, 1000
 	WinActivate, Mozilla Firefox
 	Sleep, 1000
-	WinMaximize, Mozilla Firefox
+	;WinMaximize, Mozilla Firefox
 	Goto, wait
 
 wait:
 	Menu, Tray, Icon, ico_ff_red.ico
 	IfEqual, saveas, 0, goto, waitingloop
 	CoordMode, Mouse, Relative
-	;; WinWaitActive, Save Image
-	WinWaitActive, Save
+	WinWaitActive, Save Image
+
+	;; WinWaitActive, Save
+
 	Menu, Tray, Icon, Ico_Save.ico
 	MouseGetPos, InVarX, InVarY
 	WinMove, Save Image, , , ,850,550
@@ -166,6 +170,7 @@ wait:
 	MouseMove, %InVarX%, %InVarY%, 2
 	Menu, Tray, Icon, ico_ff_red.ico
 	goto, wait
+
 
 automouse:
 	SetEnv, oldsaveas, %saveas%
