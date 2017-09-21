@@ -5,17 +5,17 @@
 ;;	All files must be in same folder. Where you want.
 ;;	64 bit AHK version : 1.1.24.2 64 bit Unicode
 
-	SetEnv, title, StartUp FireFox
-	SetEnv, mode, FF Start Options
-	SetEnv, version, Version 2017-07-08
-	SetEnv, Author, LostByteSoft
-
 ;;--- Softwares options ---
 
+	#NoEnv
 	SetWorkingDir, %A_ScriptDir%
 	#SingleInstance Force
 	#Persistent
-	#NoEnv
+
+	SetEnv, title, StartUp FireFox
+	SetEnv, mode, FF Start Options
+	SetEnv, version, Version 2017-09-15-1315
+	SetEnv, Author, LostByteSoft
 
 	DetectHiddenText, On
 	SetTitleMatchMode, Slow
@@ -40,7 +40,6 @@
 	IniRead, Maximize, StartUpFireFox.ini, options, Maximize
 	IniRead, path, StartUpFireFox.ini, options, path
 	IniRead, autorun, StartUpFireFox.ini, options, autorun
-	; IniRead, startup, StartUpFireFox.ini, options, startup
 	IniRead, startup, StartUpFireFox.ini, options, startup
 	IniRead, saveas, StartUpFireFox.ini, options, saveas
 
@@ -49,18 +48,18 @@
 	Menu, Tray, NoStandard
 	Menu, tray, add, --= %title% =--, about
 	Menu, tray, Icon, --= %title% =--, Ico_FF_red.ico
-	menu, tray, add
-	Menu, tray, add, Exit %title%, GuiClose				; GuiClose exit program
-	Menu, Tray, Icon, Exit %title%, ico_shut.ico
-	Menu, tray, add, Refresh %mode%, doReload			; Reload the script.
-	Menu, Tray, Icon, Refresh %mode%, ico_reboot.ico, 1
-	menu, tray, add
+	Menu, tray, add, Show logo, GuiLogo
+	Menu, tray, add, Secret MsgBox, secret				; Secret MsgBox
+	Menu, Tray, Icon, Secret MsgBox, ico_lock.ico, 1
 	Menu, tray, add, About - LostByteSoft, about			; Creates a new menu item.
 	Menu, Tray, Icon, About - LostByteSoft, ico_about.ico, 1
 	Menu, tray, add, %Version% , version				; About version
 	Menu, Tray, Icon, %Version%, ico_about.ico, 1
-	Menu, tray, add, Secret MsgBox, secret				; Secret MsgBox
-	Menu, Tray, Icon, Secret MsgBox, ico_lock.ico, 1
+	menu, tray, add
+	Menu, tray, add, Exit %title%, ExitApp				; Close exit program
+	Menu, Tray, Icon, Exit %title%, ico_shut.ico
+	Menu, tray, add, Refresh %mode%, doReload			; Reload the script.
+	Menu, Tray, Icon, Refresh %mode%, ico_reboot.ico, 1
 	menu, tray, add
 	menu, tray, add, --= Options =--, about
 	Menu, tray, Disable, --= Options =--
@@ -80,11 +79,16 @@
 	Menu, tray, add, Maximize, maximize
 	Menu, Tray, Icon, Maximize, ico_Maximize.ico, 1
 	menu, tray, add
+	Menu, tray, add, Start Blank Pages, traystartblank		; Start new ff
+	Menu, Tray, Icon, Start Blank Pages, Ico_FF_red.ico, 1
 	Menu, tray, add, Start/Open Firefox, traystart			; Start new ff
 	Menu, Tray, Icon, Start/Open Firefox, Ico_FF_red.ico, 1
+	menu, tray, add
 	Menu, Tray, Tip, %title%
 
 ;;--- Software start here ---
+
+loop:
 
 	Menu, Tray, Icon, ico_ff_blue.ico
 
@@ -117,8 +121,15 @@ Run:
 	msgbox, Error (variable?) StartUpFireFox.ini
 	Goto, wait
 
+traystartblank:
+	Menu, Tray, Icon, ico_ff_blue.ico
+	SetEnv, startup, about:blank
+	Goto, skip2
+
 traystart:
 	Menu, Tray, Icon, ico_ff_blue.ico
+	IniRead, startup, StartUpFireFox.ini, options, startup
+	skip2:
 	IfWinExist, Mozilla Firefox
 		{
 		goto, existmax
@@ -129,8 +140,8 @@ traystart:
 	Sleep, 2000
 	existmax:
 	WinActivate, Mozilla Firefox
-	Sleep, 2000
-	WinMaximize, Mozilla Firefox
+	Sleep, 1000
+	;WinMaximize, Mozilla Firefox
 	Goto, wait
 
 minimize:
@@ -152,9 +163,7 @@ wait:
 	IfEqual, saveas, 0, goto, waitingloop
 	CoordMode, Mouse, Relative
 	WinWaitActive, Save Image
-
 	;; WinWaitActive, Save
-
 	Menu, Tray, Icon, Ico_Save.ico
 	MouseGetPos, InVarX, InVarY
 	WinMove, Save Image, , , ,850,550
@@ -239,14 +248,15 @@ autorunonoff:
 
 ;;--- Quit (escape , esc) ---
 
-GuiClose:
+ExitApp:
 	ExitApp
 
 ;;--- Tray Bar (must be at end of file) ---
 
 Secret:
 	Menu, Tray, Icon, ico_secret.ico
-	MsgBox, 0, Start Up Firefox Secret ALL variables show, A_WorkingDir=%A_WorkingDir% path=%path%`n`ndelay=%delay% saveas=%saveas% maximize=%maximize% minimize=%minimize% autorun=%autorun%`n`nA_ComputerName=%A_ComputerName%`n`nstartup=%startup%
+	IniRead, startup, StartUpFireFox.ini, options, startup
+	MsgBox, 0, Start Up Firefox Secret ALL variables show, A_WorkingDir=%A_WorkingDir% path=%path%`n`ndelay=%delay% saveas=%saveas% maximize=%maximize% minimize=%minimize% autorun=%autorun%`n`nstartup=%startup%
 	Menu, Tray, Icon, Ico_FF_red.ico
 	Return
 
@@ -264,6 +274,12 @@ version:
 
 doReload:
 	Reload
+	Return
+
+GuiLogo:
+	Gui, Add, Picture, x25 y25 w400 h400 , ico_ff_red.ico
+	Gui, Show, w450 h450, %title% Logo
+	Gui, Color, 000000
 	Return
 
 ;;--- End of script ---
