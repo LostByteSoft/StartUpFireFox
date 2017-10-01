@@ -7,19 +7,19 @@
 
 ;;--- Softwares options ---
 
-	#NoEnv
 	SetWorkingDir, %A_ScriptDir%
+	SetTitleMatchMode, 2
+	SetTitleMatchMode, Slow
+	#NoEnv
 	#SingleInstance Force
 	#Persistent
+	DetectHiddenText, On
 
 	SetEnv, title, StartUp FireFox
 	SetEnv, mode, FF Start Options
-	SetEnv, version, Version 2017-09-15-1315
+	SetEnv, version, Version 2017-10-01-0914
 	SetEnv, Author, LostByteSoft
-
-	DetectHiddenText, On
-	SetTitleMatchMode, Slow
-	SetTitleMatchMode, 2
+	SetEnv, logoicon, ico_ff_red.ico
 
 	FileInstall, StartUpFireFox.ini, StartUpFireFox.ini,0
 	FileInstall, Ico_Save.ico, Ico_Save.ico, 0
@@ -46,15 +46,17 @@
 ;;--- Tray options ---
 
 	Menu, Tray, NoStandard
-	Menu, tray, add, --= %title% =--, about
-	Menu, tray, Icon, --= %title% =--, Ico_FF_red.ico
+	Menu, tray, add, ---=== %title% ===---, about
+	Menu, Tray, Icon, ---=== %title% ===---, %logoicon%
 	Menu, tray, add, Show logo, GuiLogo
-	Menu, tray, add, Secret MsgBox, secret				; Secret MsgBox
-	Menu, Tray, Icon, Secret MsgBox, ico_lock.ico, 1
-	Menu, tray, add, About - LostByteSoft, about			; Creates a new menu item.
-	Menu, Tray, Icon, About - LostByteSoft, ico_about.ico, 1
-	Menu, tray, add, %Version% , version				; About version
-	Menu, Tray, Icon, %Version%, ico_about.ico, 1
+	Menu, tray, add, Secret MsgBox, secret				; Secret MsgBox, just show all options and variables of the program
+	Menu, Tray, Icon, Secret MsgBox, ico_lock.ico
+	Menu, tray, add, About && ReadMe, author
+	Menu, Tray, Icon, About && ReadMe, ico_about.ico
+	Menu, tray, add, Author %author%, about
+	menu, tray, disable, Author %author%
+	Menu, tray, add, %version%, about
+	menu, tray, disable, %version%
 	menu, tray, add
 	Menu, tray, add, Exit %title%, ExitApp				; Close exit program
 	Menu, Tray, Icon, Exit %title%, ico_shut.ico
@@ -268,6 +270,10 @@ about:
 	TrayTip, %title%, %mode% by %author%, 2, 1
 	Return
 
+author:
+	MsgBox, 64, %title%, %title% %mode% %version% %author%. This software is usefull to strat Firefox with delay.`n`n`tGo to https://github.com/LostByteSoft
+	Return
+
 version:
 	TrayTip, %title%, %version%, 2, 2
 	Return
@@ -277,10 +283,11 @@ doReload:
 	Return
 
 GuiLogo:
-	Gui, Add, Picture, x25 y25 w400 h400 , ico_ff_red.ico
+	Gui, Add, Picture, x25 y25 w400 h400 , %logoicon%
 	Gui, Show, w450 h450, %title% Logo
 	Gui, Color, 000000
-	Return
+	Sleep, 500
+	return
 
 ;;--- End of script ---
 ;
