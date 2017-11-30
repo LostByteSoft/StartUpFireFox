@@ -17,23 +17,29 @@
 
 	SetEnv, title, StartUp FireFox
 	SetEnv, mode, FF Start Options
-	SetEnv, version, Version 2017-10-01-0914
+	SetEnv, version, Version 2017-11-23-1716
 	SetEnv, Author, LostByteSoft
+	SetEnv, icofolder, C:\Program Files\Common Files
 	SetEnv, logoicon, ico_ff_red.ico
 
+	;; specific files
+
 	FileInstall, StartUpFireFox.ini, StartUpFireFox.ini,0
-	FileInstall, Ico_Save.ico, Ico_Save.ico, 0
-	FileInstall, ico_secret.ico, ico_secret.ico, 0
-	FileInstall, ico_maximize.ico, ico_maximize.ico, 0
-	FileInstall, ico_minimize.ico, ico_minimize.ico, 0
-	FileInstall, ico_about.ico, ico_about.ico, 0
-	FileInstall, ico_lock.ico, ico_lock.ico, 0
-	FileInstall, ico_shut.ico, ico_shut.ico, 0
-	FileInstall, ico_ff_blue.ico, ico_ff_blue.ico, 0
-	FileInstall, ico_ff_red.ico, ico_ff_red.ico, 0
-	FileInstall, ico_options.ico, ico_options.ico, 0
-	FileInstall, ico_reboot.ico, ico_reboot.ico, 0
-	FileInstall, ico_shut.ico, ico_shut.ico, 0
+	FileInstall, ico_ff_blue.ico, %icofolder%\ico_ff_blue.ico, 0
+	FileInstall, ico_ff_red.ico, %icofolder%\ico_ff_red.ico, 0
+	FileInstall, ico_Save.ico, %icofolder%\ico_Save.ico, 0
+	FileInstall, ico_maximize.ico, %icofolder%\ico_maximize.ico, 0
+	FileInstall, ico_secret.ico, %icofolder%\ico_secret.ico, 0
+
+	;; Common ico
+
+	FileInstall, ico_minimize.ico, %icofolder%\ico_minimize.ico, 0
+	FileInstall, ico_about.ico, %icofolder%\ico_about.ico, 0
+	FileInstall, ico_lock.ico, %icofolder%\ico_lock.ico, 0
+	FileInstall, ico_shut.ico, %icofolder%\ico_shut.ico, 0
+	FileInstall, ico_options.ico, %icofolder%\ico_options.ico, 0
+	FileInstall, ico_reboot.ico, %icofolder%\ico_reboot.ico, 0
+	FileInstall, ico_shut.ico, %icofolder%\ico_shut.ico, 0
 
 	IniRead, delay, StartUpFireFox.ini, options, delay
 	IniRead, minimize, StartUpFireFox.ini, options, minimize
@@ -42,49 +48,50 @@
 	IniRead, autorun, StartUpFireFox.ini, options, autorun
 	IniRead, startup, StartUpFireFox.ini, options, startup
 	IniRead, saveas, StartUpFireFox.ini, options, saveas
+	IniRead, debug, StartUpFireFox.ini, options, debug
 
 ;;--- Tray options ---
 
 	Menu, Tray, NoStandard
 	Menu, tray, add, ---=== %title% ===---, about
-	Menu, Tray, Icon, ---=== %title% ===---, %logoicon%
+	Menu, Tray, Icon, ---=== %title% ===---, %icofolder%\%logoicon%
 	Menu, tray, add, Show logo, GuiLogo
 	Menu, tray, add, Secret MsgBox, secret				; Secret MsgBox, just show all options and variables of the program
-	Menu, Tray, Icon, Secret MsgBox, ico_lock.ico
+	Menu, Tray, Icon, Secret MsgBox, %icofolder%\ico_lock.ico
 	Menu, tray, add, About && ReadMe, author
-	Menu, Tray, Icon, About && ReadMe, ico_about.ico
+	Menu, Tray, Icon, About && ReadMe, %icofolder%\ico_about.ico
 	Menu, tray, add, Author %author%, about
 	menu, tray, disable, Author %author%
 	Menu, tray, add, %version%, about
 	menu, tray, disable, %version%
 	menu, tray, add
 	Menu, tray, add, Exit %title%, ExitApp				; Close exit program
-	Menu, Tray, Icon, Exit %title%, ico_shut.ico
+	Menu, Tray, Icon, Exit %title%, %icofolder%\ico_shut.ico
 	Menu, tray, add, Refresh %mode%, doReload			; Reload the script.
-	Menu, Tray, Icon, Refresh %mode%, ico_reboot.ico, 1
+	Menu, Tray, Icon, Refresh %mode%, %icofolder%\ico_reboot.ico, 1
 	menu, tray, add
 	menu, tray, add, --= Options =--, about
 	Menu, tray, Disable, --= Options =--
 	Menu, tray, add, Autorun On/Off = %autorun%, autorunonoff	; autorun
-	Menu, tray, icon, Autorun On/Off = %autorun%, ico_options.ico
+	;Menu, tray, icon, Autorun On/Off = %autorun%, %icofolder%\ico_options.ico
 	Menu, tray, add, AutoMouse On/Off = %saveas%, automouse		; auto move mouse
-	Menu, tray, icon, AutoMouse On/Off = %saveas%, ico_options.ico
+	;Menu, tray, icon, AutoMouse On/Off = %saveas%, %icofolder%\ico_options.ico
 	menu, tray, add, Start Delay = %delay%, startdelay
-	menu, tray, icon, Start Delay = %delay%, ico_options.ico
+	;menu, tray, icon, Start Delay = %delay%, %icofolder%\ico_options.ico
 	Menu, tray, add, Open StartUpFireFox.ini, openini
-	Menu, tray, icon, Open StartUpFireFox.ini, ico_options.ico
+	;Menu, tray, icon, Open StartUpFireFox.ini, %icofolder%\ico_options.ico
 	menu, tray, add
 	Menu, tray, add, Firefox Close, close				; Close ff
-	Menu, Tray, Icon, Firefox Close, ico_shut.ico, 1
+	Menu, Tray, Icon, Firefox Close, %icofolder%\ico_shut.ico, 1
 	Menu, tray, add, Minimize, minimize
-	Menu, Tray, Icon, Minimize, ico_minimize.ico, 1
+	Menu, Tray, Icon, Minimize, %icofolder%\ico_minimize.ico, 1
 	Menu, tray, add, Maximize, maximize
-	Menu, Tray, Icon, Maximize, ico_Maximize.ico, 1
+	Menu, Tray, Icon, Maximize, %icofolder%\ico_Maximize.ico, 1
 	menu, tray, add
 	Menu, tray, add, Start Blank Pages, traystartblank		; Start new ff
-	Menu, Tray, Icon, Start Blank Pages, Ico_FF_red.ico, 1
+	Menu, Tray, Icon, Start Blank Pages, %icofolder%\ico_FF_red.ico, 1
 	Menu, tray, add, Start/Open Firefox, traystart			; Start new ff
-	Menu, Tray, Icon, Start/Open Firefox, Ico_FF_red.ico, 1
+	Menu, Tray, Icon, Start/Open Firefox, %icofolder%\ico_FF_red.ico, 1
 	menu, tray, add
 	Menu, Tray, Tip, %title%
 
@@ -92,7 +99,7 @@
 
 loop:
 
-	Menu, Tray, Icon, ico_ff_blue.ico
+	Menu, Tray, Icon, %icofolder%\ico_ff_blue.ico
 
 IfExist, %path%, Goto, Start
 	MsgBox, Firefox is not installed in %path%.
@@ -124,12 +131,12 @@ Run:
 	Goto, wait
 
 traystartblank:
-	Menu, Tray, Icon, ico_ff_blue.ico
+	Menu, Tray, Icon, %icofolder%\ico_ff_blue.ico
 	SetEnv, startup, about:blank
 	Goto, skip2
 
 traystart:
-	Menu, Tray, Icon, ico_ff_blue.ico
+	Menu, Tray, Icon, %icofolder%\ico_ff_blue.ico
 	IniRead, startup, StartUpFireFox.ini, options, startup
 	skip2:
 	IfWinExist, Mozilla Firefox
@@ -147,13 +154,13 @@ traystart:
 	Goto, wait
 
 minimize:
-	Menu, Tray, Icon, ico_ff_blue.ico
+	Menu, Tray, Icon, %icofolder%\ico_ff_blue.ico
 	Sleep, 1000
 	WinMinimize,Mozilla Firefox
 	Goto, wait
 
 maximize:
-	Menu, Tray, Icon, ico_ff_blue.ico
+	Menu, Tray, Icon, %icofolder%\ico_ff_blue.ico
 	Sleep, 1000
 	WinActivate, Mozilla Firefox
 	Sleep, 1000
@@ -161,14 +168,20 @@ maximize:
 	Goto, wait
 
 wait:
-	Menu, Tray, Icon, ico_ff_red.ico
+	Menu, Tray, Icon, %icofolder%\ico_ff_red.ico
 	IfEqual, saveas, 0, goto, waitingloop
-	CoordMode, Mouse, Relative
+
 	WinWaitActive, Save Image
-	;; WinWaitActive, Save
-	Menu, Tray, Icon, Ico_Save.ico
+	; WinWaitActive, Save, &Enregistrer
+
+	CoordMode, Mouse, Relative
+	;CoordMode, Mouse, Screen
 	MouseGetPos, InVarX, InVarY
-	WinMove, Save Image, , , ,850,550
+
+	;; WinWaitActive, Save
+	Menu, Tray, Icon, %icofolder%\ico_Save.ico
+	WinMove, Save Image, , , ,850,550	; It grab only images files , causes some bugs with anotherS softwares.
+	; WinMove, Save As, , , ,850,550
 	MouseMove, 675, 520, 5
 	AnyKeyWait() {				; mouse move count
 		T := A_TimeIdle
@@ -178,8 +191,9 @@ wait:
 		}
 		}
 	WinWaitActive, Mozilla Firefox		; wait saveas dissapear
+	IfEqual, Debug, 1, MsgBox, MouseMove %InVarX% %InVarY%
 	MouseMove, %InVarX%, %InVarY%, 2
-	Menu, Tray, Icon, ico_ff_red.ico
+	Menu, Tray, Icon, %icofolder%\ico_ff_red.ico
 	goto, wait
 
 
@@ -203,7 +217,7 @@ automouse:
 		goto, waitingloop
 
 waitingloop:
-	Menu, Tray, Icon, Ico_FF_red.ico
+	Menu, Tray, Icon, %icofolder%\ico_FF_red.ico
 	sleep, 2147483647			; 24 days
 	goto, waitingloop
 
@@ -229,7 +243,7 @@ autorunonoff:
 	IfEqual, autorun, 1, goto, disableautorun
 	IfEqual, autorun, 0, goto, enableautorun
 	msgbox, error_02 autorun error variable must be 1 or 0
-	Menu, Tray, Icon, Ico_FF_red.ico
+	Menu, Tray, Icon, %icofolder%\ico_FF_red.ico
 	Goto, wait
 
 	enableautorun:
@@ -237,7 +251,7 @@ autorunonoff:
 	SetEnv, autorun, 1
 	TrayTip, %title%, Autorun enabled - %autorun%, 2, 2
 	Menu, Tray, Rename, Autorun On/Off = 0, Autorun On/Off = 1
-	Menu, Tray, Icon, Ico_FF_red.ico
+	Menu, Tray, Icon, %icofolder%\ico_FF_red.ico
 	Goto, wait
 
 	disableautorun:
@@ -245,21 +259,28 @@ autorunonoff:
 	SetEnv, autorun, 0
 	TrayTip, %title%, Autorun disabled - %autorun%, 2, 2
 	Menu, Tray, Rename, Autorun On/Off = 1, Autorun On/Off = 0
-	Menu, Tray, Icon, Ico_FF_red.ico
+	Menu, Tray, Icon, %icofolder%\ico_FF_red.ico
 	Goto, wait
 
 ;;--- Quit (escape , esc) ---
 
-ExitApp:
+exitapp:
 	ExitApp
+
+;Escape::		; For debug & testing
+	ExitApp
+
+doReload:
+	Reload
+	Return
 
 ;;--- Tray Bar (must be at end of file) ---
 
 Secret:
-	Menu, Tray, Icon, ico_secret.ico
+	Menu, Tray, Icon, %icofolder%\ico_secret.ico
 	IniRead, startup, StartUpFireFox.ini, options, startup
 	MsgBox, 0, Start Up Firefox Secret ALL variables show, A_WorkingDir=%A_WorkingDir% path=%path%`n`ndelay=%delay% saveas=%saveas% maximize=%maximize% minimize=%minimize% autorun=%autorun%`n`nstartup=%startup%
-	Menu, Tray, Icon, Ico_FF_red.ico
+	Menu, Tray, Icon, %icofolder%\ico_FF_red.ico
 	Return
 
 close:
@@ -278,15 +299,15 @@ version:
 	TrayTip, %title%, %version%, 2, 2
 	Return
 
-doReload:
-	Reload
+GuiLogo:
+	Gui, 4:Add, Picture, x25 y25 w400 h400, %icofolder%\%logoicon%
+	Gui, 4:Show, w450 h450, %title% Logo
+	;;Gui, 4:Color, 000000
+	Sleep, 500
 	Return
 
-GuiLogo:
-	Gui, Add, Picture, x25 y25 w400 h400 , %logoicon%
-	Gui, Show, w450 h450, %title% Logo
-	Gui, Color, 000000
-	Sleep, 500
+	4GuiClose:
+	Gui 4:Cancel
 	return
 
 ;;--- End of script ---
