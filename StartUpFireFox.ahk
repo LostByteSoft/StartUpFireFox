@@ -17,7 +17,7 @@
 
 	SetEnv, title, StartUp FireFox
 	SetEnv, mode, FF Start Options
-	SetEnv, version, Version 2017-11-23-1716
+	SetEnv, version, Version 2021-02-04
 	SetEnv, Author, LostByteSoft
 	SetEnv, icofolder, C:\Program Files\Common Files
 	SetEnv, logoicon, ico_ff_red.ico
@@ -56,7 +56,7 @@
 	Menu, tray, add, ---=== %title% ===---, about
 	Menu, Tray, Icon, ---=== %title% ===---, %icofolder%\%logoicon%
 	Menu, tray, add, Show logo, GuiLogo
-	Menu, tray, add, Secret MsgBox, secret				; Secret MsgBox, just show all options and variables of the program
+	Menu, tray, add, Secret MsgBox, secret					; Secret MsgBox, just show all options and variables of the program
 	Menu, Tray, Icon, Secret MsgBox, %icofolder%\ico_lock.ico
 	Menu, tray, add, About && ReadMe, author
 	Menu, Tray, Icon, About && ReadMe, %icofolder%\ico_about.ico
@@ -65,33 +65,34 @@
 	Menu, tray, add, %version%, about
 	menu, tray, disable, %version%
 	menu, tray, add
-	Menu, tray, add, Exit %title%, ExitApp				; Close exit program
+	Menu, tray, add, Exit %title%, ExitApp					; Close exit program
 	Menu, Tray, Icon, Exit %title%, %icofolder%\ico_shut.ico
-	Menu, tray, add, Refresh %mode%, doReload			; Reload the script.
+	Menu, tray, add, Refresh %mode%, doReload				; Reload the script.
 	Menu, Tray, Icon, Refresh %mode%, %icofolder%\ico_reboot.ico, 1
 	menu, tray, add
 	menu, tray, add, --= Options =--, about
 	Menu, tray, Disable, --= Options =--
-	Menu, tray, add, Autorun On/Off = %autorun%, autorunonoff	; autorun
+	Menu, tray, add, Autorun On/Off = %autorun%, autorunonoff		; autorun
 	;Menu, tray, icon, Autorun On/Off = %autorun%, %icofolder%\ico_options.ico
-	Menu, tray, add, AutoMouse On/Off = %saveas%, automouse		; auto move mouse
+	Menu, tray, add, AutoMouse On/Off = %saveas%, automouse			; auto move mouse
 	;Menu, tray, icon, AutoMouse On/Off = %saveas%, %icofolder%\ico_options.ico
 	menu, tray, add, Start Delay = %delay%, startdelay
 	;menu, tray, icon, Start Delay = %delay%, %icofolder%\ico_options.ico
 	Menu, tray, add, Open StartUpFireFox.ini, openini
 	;Menu, tray, icon, Open StartUpFireFox.ini, %icofolder%\ico_options.ico
 	menu, tray, add
-	Menu, tray, add, Firefox Close, close				; Close ff
+	Menu, tray, add, Firefox Close, close					; Close ff
 	Menu, Tray, Icon, Firefox Close, %icofolder%\ico_shut.ico, 1
 	Menu, tray, add, Minimize, minimize
 	Menu, Tray, Icon, Minimize, %icofolder%\ico_minimize.ico, 1
 	Menu, tray, add, Maximize, maximize
 	Menu, Tray, Icon, Maximize, %icofolder%\ico_Maximize.ico, 1
 	menu, tray, add
-	Menu, tray, add, Start Blank Pages, traystartblank		; Start new ff
+	Menu, tray, add, Start Blank Pages, traystartblank			; Start new ff
 	Menu, Tray, Icon, Start Blank Pages, %icofolder%\ico_FF_red.ico, 1
-	Menu, tray, add, Start/Open Firefox, traystart			; Start new ff
-	Menu, Tray, Icon, Start/Open Firefox, %icofolder%\ico_FF_red.ico, 1
+	Menu, tray, add, Start/Open Firefox (Same as click), traystart				; Start new ff
+	menu, tray, Default, Start/Open Firefox (Same as click)
+	Menu, Tray, Icon, Start/Open Firefox (Same as click), %icofolder%\ico_FF_red.ico, 1
 	menu, tray, add
 	Menu, Tray, Tip, %title%
 
@@ -122,7 +123,7 @@ Run:
 	skip:
 	;;msgbox, startup=%startup%
 	Run, %path% %startup%
-	Sleep, 2000
+	Sleep, 1000
 	WinWait, Mozilla Firefox
 	Sleep, 2000
 	IfEqual, minimize, 1, goto, minimize
@@ -144,13 +145,15 @@ traystart:
 		goto, existmax
 		}
 	Run, %path% %startup%
-	Sleep, 2000
+	Sleep, 1000
 	WinWait,- Mozilla Firefox
-	Sleep, 2000
+	Sleep, 1000
 	existmax:
+	Menu, Tray, Icon, %icofolder%\ico_ff_red.ico		;; added on 2021-02-04
 	WinActivate, Mozilla Firefox
 	Sleep, 1000
 	;WinMaximize, Mozilla Firefox
+	WinShow, Mozilla Firefox
 	Goto, wait
 
 minimize:
