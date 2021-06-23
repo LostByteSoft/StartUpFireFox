@@ -1,7 +1,7 @@
 ;;--- Head --- Informations --- AHK ---
 
 ;;	Firefox startup
-;;	Compatibility: Windows
+;;	Compatibility: Windows 11 x64
 ;;	All files must be in same folder. Where you want.
 ;;	64 bit AHK version : 1.1.24.2 64 bit Unicode
 
@@ -17,7 +17,7 @@
 
 	SetEnv, title, StartUp FireFox
 	SetEnv, mode, FF Start Options
-	SetEnv, version, Version 2021-02-04
+	SetEnv, version, Version 2021-06-19
 	SetEnv, Author, LostByteSoft
 	SetEnv, icofolder, C:\Program Files\Common Files
 	SetEnv, logoicon, ico_ff_red.ico
@@ -25,21 +25,21 @@
 	;; specific files
 
 	FileInstall, StartUpFireFox.ini, StartUpFireFox.ini,0
-	FileInstall, ico_ff_blue.ico, %icofolder%\ico_ff_blue.ico, 0
-	FileInstall, ico_ff_red.ico, %icofolder%\ico_ff_red.ico, 0
-	FileInstall, ico_Save.ico, %icofolder%\ico_Save.ico, 0
-	FileInstall, ico_maximize.ico, %icofolder%\ico_maximize.ico, 0
-	FileInstall, ico_secret.ico, %icofolder%\ico_secret.ico, 0
+	FileInstall, SharedIcons/ico_ff_blue.ico, %icofolder%\ico_ff_blue.ico, 0
+	FileInstall, SharedIcons/ico_ff_red.ico, %icofolder%\ico_ff_red.ico, 0
+	FileInstall, SharedIcons/ico_Save.ico, %icofolder%\ico_Save.ico, 0
+	FileInstall, SharedIcons/ico_maximize.ico, %icofolder%\ico_maximize.ico, 0
+	FileInstall, SharedIcons/ico_secret.ico, %icofolder%\ico_secret.ico, 0
 
 	;; Common ico
 
-	FileInstall, ico_minimize.ico, %icofolder%\ico_minimize.ico, 0
-	FileInstall, ico_about.ico, %icofolder%\ico_about.ico, 0
-	FileInstall, ico_lock.ico, %icofolder%\ico_lock.ico, 0
-	FileInstall, ico_shut.ico, %icofolder%\ico_shut.ico, 0
-	FileInstall, ico_options.ico, %icofolder%\ico_options.ico, 0
-	FileInstall, ico_reboot.ico, %icofolder%\ico_reboot.ico, 0
-	FileInstall, ico_shut.ico, %icofolder%\ico_shut.ico, 0
+	FileInstall, SharedIcons/ico_minimize.ico, %icofolder%\ico_minimize.ico, 0
+	FileInstall, SharedIcons/ico_about.ico, %icofolder%\ico_about.ico, 0
+	FileInstall, SharedIcons/ico_lock.ico, %icofolder%\ico_lock.ico, 0
+	FileInstall, SharedIcons/ico_shut.ico, %icofolder%\ico_shut.ico, 0
+	FileInstall, SharedIcons/ico_options.ico, %icofolder%\ico_options.ico, 0
+	FileInstall, SharedIcons/ico_reboot.ico, %icofolder%\ico_reboot.ico, 0
+	FileInstall, SharedIcons/ico_shut.ico, %icofolder%\ico_shut.ico, 0
 
 	IniRead, delay, StartUpFireFox.ini, options, delay
 	IniRead, minimize, StartUpFireFox.ini, options, minimize

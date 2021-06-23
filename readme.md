@@ -10,7 +10,9 @@ You can simply install this software with the file Install.bat
 
 The AutoMouse option move the mouse when the save image box appear.
 
-You can change all options in file PrintScreener.ini
+You can change all options in file StartUpFireFox.ini
+
+Updated: 2021-06-20 to support win 11
 
 ----------------------------------------------------
 
