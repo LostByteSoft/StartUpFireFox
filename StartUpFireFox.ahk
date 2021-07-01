@@ -4,6 +4,7 @@
 ;;	Compatibility: Windows 11 x64
 ;;	All files must be in same folder. Where you want.
 ;;	64 bit AHK version : 1.1.24.2 64 bit Unicode
+;;	Update 2021-06-30 support win 10 & win 11
 
 ;;--- Softwares options ---
 
@@ -17,28 +18,34 @@
 
 	SetEnv, title, StartUp FireFox
 	SetEnv, mode, FF Start Options
-	SetEnv, version, Version 2021-06-19
+	SetEnv, version, Version 2021-06-30
 	SetEnv, Author, LostByteSoft
-	SetEnv, icofolder, C:\Program Files\Common Files
+	SetEnv, icofolder, %A_AppData%
 	SetEnv, logoicon, ico_ff_red.ico
+	SetEnv, comp, w7 w8 w8.1 w10 w11 (x64)
 
 	;; specific files
 
 	FileInstall, StartUpFireFox.ini, StartUpFireFox.ini,0
-	FileInstall, SharedIcons/ico_ff_blue.ico, %icofolder%\ico_ff_blue.ico, 0
-	FileInstall, SharedIcons/ico_ff_red.ico, %icofolder%\ico_ff_red.ico, 0
-	FileInstall, SharedIcons/ico_Save.ico, %icofolder%\ico_Save.ico, 0
-	FileInstall, SharedIcons/ico_maximize.ico, %icofolder%\ico_maximize.ico, 0
-	FileInstall, SharedIcons/ico_secret.ico, %icofolder%\ico_secret.ico, 0
+	FileInstall, ProgIcons/ico_ff_blue.ico, %icofolder%\ico_ff_blue.ico, 0
+	FileInstall, ProgIcons/ico_ff_red.ico, %icofolder%\ico_ff_red.ico, 0
+	FileInstall, ProgIcons/ico_maximize.ico, %icofolder%\ico_maximize.ico, 0
+	FileInstall, ProgIcons/ico_minimize.ico, %icofolder%\ico_minimize.ico, 0
+	FileInstall, ProgIcons/ico_Save.ico, %icofolder%\ico_Save.ico, 0
+	FileInstall, ProgIcons/ico_secret.ico, %icofolder%\ico_secret.ico, 0
 
 	;; Common ico
 
-	FileInstall, SharedIcons/ico_minimize.ico, %icofolder%\ico_minimize.ico, 0
 	FileInstall, SharedIcons/ico_about.ico, %icofolder%\ico_about.ico, 0
+	FileInstall, SharedIcons/ico_debug.ico, %icofolder%\ico_debug.ico, 0
+	FileInstall, SharedIcons/ico_folder.ico, %icofolder%\ico_folder.ico, 0
+	FileInstall, SharedIcons/ico_HotKeys.ico, %icofolder%\ico_HotKeys.ico, 0
 	FileInstall, SharedIcons/ico_lock.ico, %icofolder%\ico_lock.ico, 0
-	FileInstall, SharedIcons/ico_shut.ico, %icofolder%\ico_shut.ico, 0
+	FileInstall, SharedIcons/ico_loupe.ico, %icofolder%\ico_loupek.ico, 0
 	FileInstall, SharedIcons/ico_options.ico, %icofolder%\ico_options.ico, 0
+	FileInstall, SharedIcons/ico_pause.ico, %icofolder%\ico_pause.ico, 0
 	FileInstall, SharedIcons/ico_reboot.ico, %icofolder%\ico_reboot.ico, 0
+	FileInstall, SharedIcons/ico_secret.ico, %icofolder%\ico_secret.ico, 0
 	FileInstall, SharedIcons/ico_shut.ico, %icofolder%\ico_shut.ico, 0
 
 	IniRead, delay, StartUpFireFox.ini, options, delay
@@ -70,8 +77,20 @@
 	Menu, tray, add, Refresh %mode%, doReload				; Reload the script.
 	Menu, Tray, Icon, Refresh %mode%, %icofolder%\ico_reboot.ico, 1
 	menu, tray, add
-	menu, tray, add, --= Options =--, about
-	Menu, tray, Disable, --= Options =--
+	Menu, tray, add, --== Control ==--, about
+	Menu, Tray, Icon, --== Control ==--, %icofolder%\ico_options.ico
+	Menu, tray, Disable, --== Control ==--
+	Menu, tray, add, Set Debug (Toggle), debug				; debug msg
+	Menu, Tray, Icon, Set Debug (Toggle), %icofolder%\ico_debug.ico
+	Menu, tray, add, Open A_WorkingDir, A_WorkingDir			; open where the exe is
+	Menu, Tray, Icon, Open A_WorkingDir, %icofolder%\ico_folder.ico
+	Menu, tray, add, Pause (Toggle), pause					; pause the script
+	Menu, Tray, Icon, Pause (Toggle), %icofolder%\ico_pause.ico
+	menu, tray, add
+	menu, tray, add, --== Options ==--, about
+	Menu, Tray, Icon, --== Options ==--, %icofolder%\ico_options.ico
+	Menu, tray, Disable, --== Options ==--
+
 	Menu, tray, add, Autorun On/Off = %autorun%, autorunonoff		; autorun
 	;Menu, tray, icon, Autorun On/Off = %autorun%, %icofolder%\ico_options.ico
 	Menu, tray, add, AutoMouse On/Off = %saveas%, automouse			; auto move mouse
@@ -99,7 +118,6 @@
 ;;--- Software start here ---
 
 loop:
-
 	Menu, Tray, Icon, %icofolder%\ico_ff_blue.ico
 
 IfExist, %path%, Goto, Start
@@ -265,6 +283,50 @@ autorunonoff:
 	Menu, Tray, Icon, %icofolder%\ico_FF_red.ico
 	Goto, wait
 
+;;--- Common options : Debug , pause , A_WorkingDir ---
+
+debug:
+	IfEqual, debug, 0, goto, debug1
+	IfEqual, debug, 1, goto, debug0
+
+	debug0:
+	SetEnv, debug, 0
+	TrayTip, %title%, Deactivated ! debug=%debug%, 1, 2
+	Goto, sleep2
+
+	debug1:
+	SetEnv, debug, 1
+	TrayTip, %title%, Activated ! debug=%debug%, 1, 2
+	Goto, sleep2
+
+pause:
+	Ifequal, pause, 0, goto, paused
+	Ifequal, pause, 1, goto, unpaused
+
+	paused:
+	SetEnv, pause, 1
+	goto, sleep
+
+	unpaused:	
+	Menu, Tray, Icon, %icofolder%\%logoicon%
+	SetEnv, pause, 0
+	Goto, loop
+
+	sleep:
+	Menu, Tray, Icon, %icofolder%\ico_pause.ico
+	sleep2:
+	sleep, 500000
+	goto, sleep2
+
+A_WorkingDir:
+	IfEqual, debug, 1, msgbox, run, explorer.exe "%A_WorkingDir%"
+	run, explorer.exe "%A_WorkingDir%"
+	Return
+
+OpenStartup:
+	run, explorer.exe "%A_AppData%\Microsoft\Windows\Start Menu\Programs\Startup"
+	Return
+
 ;;--- Quit (escape , esc) ---
 
 exitapp:
@@ -282,7 +344,7 @@ doReload:
 Secret:
 	Menu, Tray, Icon, %icofolder%\ico_secret.ico
 	IniRead, startup, StartUpFireFox.ini, options, startup
-	MsgBox, 0, Start Up Firefox Secret ALL variables show, A_WorkingDir=%A_WorkingDir% path=%path%`n`ndelay=%delay% saveas=%saveas% maximize=%maximize% minimize=%minimize% autorun=%autorun%`n`nstartup=%startup%
+	MsgBox, 0, Start Up Firefox Secret ALL variables show,`n`nA_WorkingDir=%A_WorkingDir%`n`nA_AppData=%A_AppData%`n`npath=%path%`n`ndelay=%delay% saveas=%saveas% maximize=%maximize% minimize=%minimize% autorun=%autorun%`n`nstartup=%startup%
 	Menu, Tray, Icon, %icofolder%\ico_FF_red.ico
 	Return
 
